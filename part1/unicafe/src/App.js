@@ -25,7 +25,7 @@ const App = () => {
       <button>good</button>
       <button>neutral</button>
       <button>bad</button>
-      <Statistics />
+      {good || neutral || bad ? <Statistics /> : <p>No feedback given</p>}
     </div>
   );
 };
