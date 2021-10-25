@@ -7,7 +7,17 @@ const App = () => {
 
   return (
     <div>
-      code here
+      <h1>Give feedback</h1>
+      <button>good</button>
+      <button>neutral</button>
+      <button>bad</button>
+      <h2>Statistics</h2>
+      <p>good 6</p>
+      <p>neutral 2</p>
+      <p>bad 1</p>
+      <p>all 9</p>
+      <p>average 0.555555</p>
+      <p>positive 66.66666 %</p>
     </div>
   )
 }
