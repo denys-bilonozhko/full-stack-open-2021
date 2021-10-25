@@ -26,11 +26,11 @@ const Statistics = ({ feedback }) => {
           <StatisticLine text="all" value={total} />
           <StatisticLine
             text="average"
-            value={(feedback.good - feedback.bad) / total}
+            value={((feedback.good - feedback.bad) / total).toFixed(1)}
           />
           <StatisticLine
             text="positive"
-            value={(feedback.good / total) * 100}
+            value={`${((feedback.good / total) * 100).toFixed(1)} %`}
           />
         </tbody>
       </table>
