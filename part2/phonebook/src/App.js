@@ -1,18 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Search from './components/Search';
 import Form from './components/Form';
 import PersonsList from './components/PersonList';
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', phone: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', phone: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', phone: '39-23-6423122', id: 4 },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newPhoneNumber, setNewPhoneNumber] = useState('');
   const [newName, setNewName] = useState('');
   const [searchFilter, setSearchFilter] = useState('');
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/persons').then((response) => {
+      setPersons(response.data);
+    });
+  }, []);
 
   const addPerson = (event) => {
     event.preventDefault();
@@ -20,7 +22,7 @@ const App = () => {
     if (!persons.some((person) => person.name === newName)) {
       const personObject = {
         name: newName,
-        phone: newPhoneNumber,
+        number: newPhoneNumber,
       };
 
       setPersons(persons.concat(personObject));
