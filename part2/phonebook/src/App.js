@@ -12,7 +12,6 @@ const App = () => {
   const [searchFilter, setSearchFilter] = useState('');
   const [notification, setNotification] = useState(null);
 
-
   useEffect(() => {
     personsService.getAll().then((response) => setPersons(response.data));
   }, []);
@@ -27,11 +26,7 @@ const App = () => {
       };
 
       personsService.create(personObject).then((response) => {
-        setNotification(newName);
-        setTimeout(() => {
-          setNotification(null)
-        }, 5000)
-        
+        showNotification({ content: newName, type: 'add' });
         setPersons(persons.concat(response.data));
         setNewName('');
         setNewPhoneNumber('');
@@ -39,6 +34,13 @@ const App = () => {
     } else {
       alert(`${newName} is already added to phonebook`);
     }
+  };
+
+  const showNotification = (message) => {
+    setNotification(message);
+    setTimeout(() => {
+      setNotification(null);
+    }, 5000);
   };
 
   const handleNameChange = (event) => {
@@ -53,10 +55,12 @@ const App = () => {
     setSearchFilter(event.target.value);
   };
 
-   const removePerson = (id) => {
+  const removePerson = (id, name) => {
     if (window.confirm('Do you really want to delete?')) {
-       personsService.remove(id);
-       setPersons(persons.filter(person => person.id !== id))
+      personsService
+        .remove(id)
+        .catch((error) => showNotification({ content: name, type: 'error' }));
+      setPersons(persons.filter((person) => person.id !== id));
     }
   };
 
@@ -67,7 +71,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification  message={notification}/>
+      <Notification message={notification} />
       <Search value={searchFilter} onChange={searchHandler} />
       <h2>add a new</h2>
       <Form

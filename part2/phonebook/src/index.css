@@ -1,8 +1,18 @@
-.notification {
+.notification,
+.error {
   display: inline-block;
-  color: green;
-  background-color: gray;
-  font-size: 32px;
-  border: 3px solid green;
   margin: 20px 0;
+  border: 3px solid;
+  font-size: 32px;
+  background-color: gray;
+}
+
+.notification {
+  border-top: green;
+  color: green;
+}
+
+.error {
+  border-color: red;
+  color: red;
 }
