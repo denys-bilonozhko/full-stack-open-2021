@@ -55,7 +55,10 @@ function App() {
       {countriesToShow()
         ? countriesToShow()
         : filteredCountries.map((country) => (
-            <p key={country.latlng}>{country.name}</p>
+            <div>
+              <span key={country.latlng}>{country.name}</span>
+              <button onClick={() => setSearch(country.name)}>show</button>
+            </div>
           ))}
     </div>
   );
