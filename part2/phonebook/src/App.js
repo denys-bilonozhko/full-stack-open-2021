@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Search from './components/Search';
 import Form from './components/Form';
 import PersonsList from './components/PersonList';
+import personsService from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,9 +11,7 @@ const App = () => {
   const [searchFilter, setSearchFilter] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then((response) => {
-      setPersons(response.data);
-    });
+    personsService.getAll().then((response) => setPersons(response.data));
   }, []);
 
   const addPerson = (event) => {
@@ -25,9 +23,11 @@ const App = () => {
         number: newPhoneNumber,
       };
 
-      setPersons(persons.concat(personObject));
-      setNewName('');
-      setNewPhoneNumber('');
+      personsService.create(personObject).then((response) => {
+        setPersons(persons.concat(response.data));
+        setNewName('');
+        setNewPhoneNumber('');
+      });
     } else {
       alert(`${newName} is already added to phonebook`);
     }
@@ -43,6 +43,13 @@ const App = () => {
 
   const searchHandler = (event) => {
     setSearchFilter(event.target.value);
+  };
+
+   const removePerson = (id) => {
+    if (window.confirm('Do you really want to delete?')) {
+       personsService.remove(id);
+       setPersons(persons.filter(person => person.id !== id))
+    }
   };
 
   const searchedPersons = persons.filter((person) => {
@@ -62,7 +69,7 @@ const App = () => {
         numberHandler={handlePhoneNumberChange}
       />
       <h2>Numbers</h2>
-      <PersonsList persons={searchedPersons} />
+      <PersonsList persons={searchedPersons} removePerson={removePerson} />
     </div>
   );
 };
